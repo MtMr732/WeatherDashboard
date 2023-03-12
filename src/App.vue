@@ -149,5 +149,16 @@ header {
     place-items: flex-start;
     flex-wrap: wrap;
   }
+
+  .firstContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+  }
+  .secondContainer {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }
 </style>
