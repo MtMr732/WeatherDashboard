@@ -1,10 +1,11 @@
 <script setup>
-import { inject, ref } from 'vue'
+import { inject, ref, nextTick } from 'vue'
 // この中に、template内で利用する変数や関数を定義しておく。
 import InputForm from './components/InputForm.vue'
 import CurrentWeather from './components/CurrentWeather.vue'
 import HourlyForecast from './components/HourlyForecast.vue'
 import DailyForecast from './components/DailyForecast.vue'
+import { provide } from 'vue'
 
 const axios = inject('axios')
 const API_KEY = import.meta.env.VITE_API_KEY
@@ -14,9 +15,7 @@ const HOUR = 24
 // 一時的にInputFormの中身をここに記載（componentに分けるときに削除する）
 const lat = ref(36)
 const lon = ref(140)
-const clickSubmit = () => {
-  console.log('lat:' + lat.value, 'lon:' + lon.value)
-}
+const resetFlag = ref(true)
 
 let hourlyDataList = ref([])
 let dailyDataList = ref([])
@@ -31,12 +30,14 @@ let currentData = ref({
   ]
 })
 const createDashboard = async () => {
-  const data = await fetchData().then((res) => {
-    return res.data
-  })
+  const data = await fetchData()
   console.log(data)
   // APIで取得したデータを各ダッシュボード用に成形する関数
   format(data)
+
+  // APIから取得したデータを下位コンポーネントに渡した後、v-ifの値を変更することでグラフを再レンダリングする処理
+  resetFlag.value = false
+  nextTick(() => (resetFlag.value = true))
 }
 
 // const useFetch = () => {
@@ -62,13 +63,17 @@ const createDashboard = async () => {
 // })
 
 const fetchData = async () => {
-  return await axios.get(
-    `${baseURL}?lat=${lat.value}&lon=${lon.value}&exclude=minutely,alerts&appid=${API_KEY}&units=metric`
-  )
+  return await axios
+    .get(
+      `${baseURL}?lat=${lat.value}&lon=${lon.value}&exclude=minutely,alerts&appid=${API_KEY}&units=metric`
+    )
+    .then((res) => {
+      return res.data
+    })
 }
 
 const format = (data) => {
-  // let hourlyDataList = ref([])
+  // let tempList = ref([])
   // let dailyDataList = ref([])
   currentData.value.dt = data.current.dt
   currentData.value.temp = data.current.temp
@@ -80,9 +85,12 @@ const format = (data) => {
 
   for (let index = 0; index < HOUR; index++) {
     const { dt, temp } = hourlyData[index]
+    const time = new Date(dt * 1000).getHours()
     // 新しい緯度経度でチャートを更新する時に前のデータが残ってしまうかもしれないので、要改善かも
-    hourlyDataList.value.push({ dt, temp })
+    hourlyDataList.value.push({ time, temp })
   }
+  // console.log(tempList)
+  // hourlyDataList = tempList
   for (let index = 0; index < dailyData.length; index++) {
     const { dt, temp } = dailyData[index]
     const { max, min } = temp
@@ -97,7 +105,7 @@ const format = (data) => {
 }
 
 const click = () => {
-  console.log(currentData)
+  console.log(hourlyDataList)
 }
 </script>
 
@@ -105,19 +113,17 @@ const click = () => {
   <header></header>
 
   <main>
-    <button @click="createDashboard">クリック</button>
-    <button @click="click">確認</button>
-
     <div class="firstContainer">
+      <button @click="click">親</button>
       <InputForm @click="createDashboard">
         <input v-model="lat" type="text" placeholder="経度:lat" />
         <input v-model="lon" type="text" placeholder="緯度:lon" />
-        <button @click="createDashboard">更新</button>
+        <button @click="createDashboard">検索</button>
       </InputForm>
       <CurrentWeather :data="currentData" />
     </div>
     <div class="secondContainer">
-      <HourlyForecast :list="hourlyDataList" />
+      <HourlyForecast v-if="resetFlag" :datalist="hourlyDataList" />
       <DailyForecast :list="dailyDataList" />
     </div>
   </main>
