@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { Chart, Grid, Line, Tooltip } from 'vue3-charts'
 
 export default defineComponent({
@@ -13,47 +13,52 @@ export default defineComponent({
 
     const direction = ref('horizontal')
     const margin = ref({
-      left: 0,
       top: 20,
+      left: 0,
       right: 20,
       bottom: 0
     })
-    const axis = ref({
-      primary: {
-        type: 'band',
-        tickValues: data
+    const chartOptions = ref({
+      plugins: {
+        tooltip: {
+          position: 'average',
+          mode: 'index',
+          offset: { x: 0, y: 10 }
+        }
       }
     })
     const click = () => {
-      console.log(props.datalist)
+      console.log(data)
     }
 
-    return { data, margin, direction, click, axis }
+    return { data, margin, direction, chartOptions, click }
   }
 })
 </script>
 
 <template>
-  <button @click="click">孫ボタン</button>
+  <!-- <button @click="click"></button> -->
+  <h2 v-if="data.length !== 0" style="padding-left: 20px">HourlyForecast</h2>
   <Chart
-    v-if="data"
-    :size="{ width: 500, height: 400 }"
+    :size="{ width: 500, height: 420 }"
     :data="data"
     :margin="margin"
     :direction="direction"
+    :options="chartOptions"
   >
     <template #layers>
       <Grid strokeDasharray="2,2" />
-      <Line :dataKeys="['time', 'temp']" type="monotone" />
+      <Line :dataKeys="['time', 'temp']" :lineStyle="{ stroke: '#2ecc71' }" type="monotone" />
     </template>
-    <template #widgets>
-      <Tooltip />
-    </template>
+    <!-- 表示位置がずれる問題があるため、Tooltipはコメントアウト -->
+    <!-- <template #widgets>
+      <Tooltip borderColor="#2ecc71" />
+    </template> -->
   </Chart>
 </template>
 
 <style>
-/* #app {
+Chart {
   color: #2ecc71;
-} */
+}
 </style>
