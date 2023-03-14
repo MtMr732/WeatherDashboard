@@ -1,5 +1,5 @@
 <script setup>
-import { inject, ref, toRefs, reactive, nextTick, watchEffect } from 'vue'
+import { inject, ref, toRefs, reactive, nextTick, watchEffect, onMounted } from 'vue'
 // この中に、template内で利用する変数や関数を定義しておく。
 import InputForm from './components/InputForm.vue'
 import CurrentWeather from './components/CurrentWeather.vue'
@@ -11,8 +11,8 @@ const API_KEY = import.meta.env.VITE_API_KEY
 const baseURL = 'https://api.openweathermap.org/data/3.0/onecall'
 const HOUR = 24
 // 一時的にInputFormの中身をここに記載（componentに分けるときに削除する）
-const lat = ref(36)
-const lon = ref(140)
+const lat = ref()
+const lon = ref()
 const resetFlag = ref(true)
 
 let hourlyDataList = reactive([])
@@ -84,6 +84,19 @@ const format = (data) => {
   }
   Object.assign(dailyDataList, tempDailyDataList)
 }
+
+onMounted(async () => {
+  const data = await fetchData(
+    `${baseURL}?lat=36&lon=140&exclude=minutely,alerts&appid=${API_KEY}&units=metric`
+  )
+  console.log(data)
+  // APIで取得したデータを各ダッシュボード用に成形する関数
+  format(data)
+
+  // APIから取得したデータを下位コンポーネントに渡した後、v-ifの値を変更することでグラフを再レンダリングする処理
+  resetFlag.value = false
+  nextTick(() => (resetFlag.value = true))
+})
 </script>
 
 <template>
