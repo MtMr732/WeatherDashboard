@@ -1,5 +1,5 @@
 <script setup>
-import { inject, ref, toRefs, reactive, nextTick, watchEffect, onMounted } from 'vue'
+import { inject, ref, reactive, nextTick, onMounted } from 'vue'
 // この中に、template内で利用する変数や関数を定義しておく。
 import InputForm from './components/InputForm.vue'
 import CurrentWeather from './components/CurrentWeather.vue'

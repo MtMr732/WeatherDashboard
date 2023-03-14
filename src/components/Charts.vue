@@ -3,7 +3,7 @@ import { defineComponent, ref } from 'vue'
 import { Chart, Grid, Line, Tooltip } from 'vue3-charts'
 
 export default defineComponent({
-  name: 'Main',
+  name: 'LineChart',
   components: { Chart, Grid, Line, Tooltip },
   props: {
     datalist: Array

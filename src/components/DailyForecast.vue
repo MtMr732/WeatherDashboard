@@ -8,7 +8,7 @@ const props = defineProps({
   <div class="container">
     <h2 v-if="props.list.length !== 0">8-day Forecast</h2>
     <ul>
-      <li v-for="dailyData in list">
+      <li v-for="(dailyData, index) in list" :key="index">
         <p v-if="dailyData.date">
           {{ dailyData.date.toDateString().slice(0, -5) }}
         </p>

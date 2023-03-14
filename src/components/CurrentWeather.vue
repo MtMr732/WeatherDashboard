@@ -6,7 +6,7 @@ const props = defineProps({
 
 <template>
   <div class="currentWeatherComponent">
-    <p v-if="data.dt" style="min-width: 90px">
+    <p v-if="props.data.dt" style="min-width: 90px">
       {{ new Date(data.dt).toDateString().slice(0, -7) }}
     </p>
     <p>{{ Math.round(data.temp) }}℃</p>
