@@ -25,7 +25,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Chart :size="{ width: 500, height: 420 }" :data="data" :margin="margin" :direction="direction">
+  <Chart :size="{ width: 550, height: 420 }" :data="data" :margin="margin" :direction="direction">
     <template #layers>
       <Grid strokeDasharray="2,2" />
       <Line :dataKeys="['time', 'temp']" :lineStyle="{ stroke: '#EC6E4C' }" type="monotone" />

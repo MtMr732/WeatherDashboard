@@ -27,29 +27,30 @@ const props = defineProps({
 
 <style scoped>
 .container {
-  width: 100%;
+  width: 40%;
 }
 ul {
   padding-left: 0;
 }
 li {
-  width: 55%;
   display: flex;
   list-style: none;
   align-items: center;
-  justify-content: space-between;
   border-radius: 4pt;
+  justify-content: space-between;
 }
 
 p {
   display: inline-block;
   font-size: large;
   text-align: center;
+  padding-right: 15px;
+  min-width: 120px;
 }
 
 @media (min-width: 1025px) {
   li {
-    width: 40%;
+    width: 50%;
   }
 }
 </style>

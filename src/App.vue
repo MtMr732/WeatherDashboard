@@ -101,31 +101,31 @@ onMounted(async () => {
 </script>
 
 <template>
-  <header></header>
-
   <main>
-    <div class="title">
+    <div class="title" style="display: flex,width: 40%">
       <h1>WeatherDashBoard</h1>
     </div>
     <div class="firstContainer">
-      <InputForm>
-        <input v-model="lat" type="text" placeholder="経度:lat" />
-        <input v-model="lon" type="text" placeholder="緯度:lon" />
-        <button @click="createDashboard">検索</button>
-      </InputForm>
-      <CurrentWeather :data="currentData" />
+      <div class="inputComponent">
+        <InputForm>
+          <input v-model="lat" type="text" placeholder="経度:lat" />
+          <input v-model="lon" type="text" placeholder="緯度:lon" />
+          <button @click="createDashboard">検索</button>
+        </InputForm>
+      </div>
+      <div>
+        <h2>Current Weather Data</h2>
+        <CurrentWeather :data="currentData" />
+      </div>
     </div>
     <div class="secondContainer">
-      <HourlyForecast v-if="resetFlag" :datalist="hourlyDataList" />
       <DailyForecast :list="dailyDataList" />
+      <HourlyForecast v-if="resetFlag" :datalist="hourlyDataList" />
     </div>
   </main>
 </template>
 
 <style>
-h2 {
-  margin-bottom: 0;
-}
 img {
   margin-right: 10px;
 }
@@ -138,10 +138,20 @@ img {
 .secondContainer {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+}
+.inputComponent {
+  display: flex;
+  align-items: center;
+  width: 40%;
+}
+button {
+  min-width: 45px;
+}
+button:hover {
+  cursor: pointer;
 }
 
-@media (min-width: 950px) {
+@media (min-width: 1024px) {
   .firstContainer {
     display: flex;
     flex-direction: row;
