@@ -77,10 +77,11 @@ const format = (data) => {
   let tempDailyDataList = []
   for (let index = 0; index < data.daily.length; index++) {
     const { dt, temp } = data.daily[index]
+    const date = new Date(Number(dt) * 1000)
     const { max, min } = temp
     const icon = data.daily[index].weather[0].icon
     // 新しい緯度経度でチャートを更新する時に前のデータが残ってしまうかもしれないので、要改善かも
-    tempDailyDataList.push({ dt, max, min, icon })
+    tempDailyDataList.push({ date, max, min, icon })
   }
   Object.assign(dailyDataList, tempDailyDataList)
 }
@@ -121,27 +122,26 @@ onMounted(async () => {
   </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<style>
+h2 {
+  margin-bottom: 0;
+}
+img {
+  margin-right: 10px;
+}
+.firstContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.secondContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+@media (min-width: 950px) {
   .firstContainer {
     display: flex;
     flex-direction: row;
@@ -150,6 +150,7 @@ header {
   }
   .secondContainer {
     display: flex;
+    flex-direction: row;
     justify-content: flex-start;
   }
 }

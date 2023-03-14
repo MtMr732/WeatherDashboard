@@ -38,9 +38,9 @@ export default defineComponent({
 
 <template>
   <!-- <button @click="click"></button> -->
-  <h2 v-if="data.length !== 0" style="padding-left: 20px">HourlyForecast</h2>
+  <h2 v-if="data.length !== 0">HourlyForecast</h2>
   <Chart
-    :size="{ width: 500, height: 420 }"
+    :size="{ width: 500, height: 380 }"
     :data="data"
     :margin="margin"
     :direction="direction"
@@ -48,17 +48,13 @@ export default defineComponent({
   >
     <template #layers>
       <Grid strokeDasharray="2,2" />
-      <Line :dataKeys="['time', 'temp']" :lineStyle="{ stroke: '#2ecc71' }" type="monotone" />
+      <Line :dataKeys="['time', 'temp']" :lineStyle="{ stroke: '#EB6E4C' }" type="monotone" />
     </template>
     <!-- 表示位置がずれる問題があるため、Tooltipはコメントアウト -->
-    <!-- <template #widgets>
-      <Tooltip borderColor="#2ecc71" />
-    </template> -->
+    <template #widgets>
+      <Tooltip borderColor="#EB6E4C" />
+    </template>
   </Chart>
 </template>
 
-<style>
-Chart {
-  color: #2ecc71;
-}
-</style>
+<style scoped></style>
