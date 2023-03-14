@@ -7,13 +7,9 @@ const props = defineProps({
 
 <template>
   <div>
-    <Charts :datalist="props.datalist"></Charts>
+    <h2 v-if="props.datalist.length !== 0">HourlyForecast</h2>
+    <Charts :datalist="props.datalist"> </Charts>
   </div>
 </template>
 
-<style>
-highcharts {
-  width: 500px;
-  height: 500px;
-}
-</style>
+<style scoped></style>

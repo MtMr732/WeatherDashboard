@@ -18,43 +18,20 @@ export default defineComponent({
       right: 20,
       bottom: 0
     })
-    const chartOptions = ref({
-      plugins: {
-        tooltip: {
-          position: 'average',
-          mode: 'index',
-          offset: { x: 0, y: 10 }
-        }
-      }
-    })
-    const click = () => {
-      console.log(data)
-    }
 
-    return { data, margin, direction, chartOptions, click }
+    return { data, margin, direction }
   }
 })
 </script>
 
 <template>
-  <!-- <button @click="click"></button> -->
-  <h2 v-if="data.length !== 0">HourlyForecast</h2>
-  <Chart
-    :size="{ width: 500, height: 380 }"
-    :data="data"
-    :margin="margin"
-    :direction="direction"
-    :options="chartOptions"
-  >
+  <Chart :size="{ width: 500, height: 420 }" :data="data" :margin="margin" :direction="direction">
     <template #layers>
       <Grid strokeDasharray="2,2" />
-      <Line :dataKeys="['time', 'temp']" :lineStyle="{ stroke: '#EB6E4C' }" type="monotone" />
+      <Line :dataKeys="['time', 'temp']" :lineStyle="{ stroke: '#EC6E4C' }" type="monotone" />
     </template>
-    <!-- 表示位置がずれる問題があるため、Tooltipはコメントアウト -->
-    <template #widgets>
-      <Tooltip borderColor="#EB6E4C" />
-    </template>
+    <template #widgets> <Tooltip /> </template>
   </Chart>
 </template>
 
-<style scoped></style>
+<style></style>
